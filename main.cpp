@@ -1,13 +1,12 @@
 #include <iostream>
-
+#include <list>
+#include <ctime>
 using namespace std;
-
 struct Node
 {
     int data;
     Node *next;
 };
-
 void push(Node **head,int data)
 {
     Node *tmp = new Node;
@@ -15,7 +14,6 @@ void push(Node **head,int data)
     tmp->next = (*head);
     (*head) = tmp;
 }
-
 int pop(Node **head)
 {
     Node *prev = nullptr;
@@ -30,7 +28,6 @@ int pop(Node **head)
     delete(prev);
     return val;
 }
-
 Node *getNth(Node *head,int n)
 {
     int counter = 0;
@@ -57,21 +54,57 @@ void show(const Node *head)
 {
     while(head!=nullptr)
     {
-        cout << head->data << endl;
+        cout << head->data << "->";
         head = head->next;
     }
+    cout << "nullptr\n";
 }
-
-void pushBack(Node *head,int data)
+Node* getLastButOne(Node *head) {
+    if (head == nullptr) {
+        exit(-2);
+    }
+    if (head->next == nullptr) {
+        return nullptr;
+    }
+    while (head->next->next) {
+        head = head->next;
+    }
+    return head;
+}
+Node /***/pushBack(Node **head,int data)
 {
-    Node *last = getLast(head);
+
+//    Node *last = getLast(head);
+//    Node *tmp = new Node;
+//    tmp->next = nullptr;
+//    tmp->data = data;
+//    last->next = tmp;
+
+//    Node *newel = new Node;
+//    newel->data = data;
+//    newel->next = nullptr;
+//    if(head==nullptr)return newel;
+//    Node *temp = head;
+//    while(temp->next)
+//    {
+//        temp=temp->next;
+//    }
+//    temp->next=newel;
+//    return head;
+    Node *last = getLast(*head);
     Node *tmp = new Node;
     tmp->data = data;
     tmp->next = nullptr;
-    last->next = tmp;
+    if(last == nullptr)
+    {
+        *head = tmp;
+    }
+    else
+    {
+        last->next = tmp;
+    }
 }
-
-Node *getLasByOne(Node *head)
+Node *getLastByOne(Node *head)
 {
     if(head == nullptr)
     {
@@ -87,7 +120,6 @@ Node *getLasByOne(Node *head)
     }
     return head;
 }
-
 void popBack(Node **head)
 {
     Node *lastbn = nullptr;
@@ -99,7 +131,7 @@ void popBack(Node **head)
     {
         exit(-1);
     }
-    lastbn = getLasByOne(*head);
+    lastbn = getLastByOne(*head);
     if(lastbn==nullptr)
     {
         delete(*head);
@@ -109,12 +141,33 @@ void popBack(Node **head)
         lastbn->next = nullptr;
     }
 }
-
 int main() {
+//    srand(time(nullptr));
+//    list<int> mylist;
+//    for (int i = 0; i < 10; ++i) {
+//        mylist.push_back(rand()%10);
+//    }
+//    mylist.sort();
+//    int i = 0;
+//    for(auto it = mylist.begin();it!=mylist.end();++it,i++)
+//    {
+//        cout << "list<" << i << ">" << *it << endl;
+//    }
+
+//    Node *head=nullptr;
+//    head=pushBack(head,12);
+//    head=pushBack(head,11);
+//    head=pushBack(head,10);
+//    show(head);
+    Node *hued=nullptr;
+    push(&hued,12);
+    push(&hued,11);
+    push(&hued,10);
+    show(hued);
     Node *head=nullptr;
-    pushBack(head,10);
-    pushBack(head,2);
-    pushBack(head,3);
+    pushBack(&head,12);
+    pushBack(&head,11);
+    pushBack(&head,10);
     show(head);
     return 0;
 }

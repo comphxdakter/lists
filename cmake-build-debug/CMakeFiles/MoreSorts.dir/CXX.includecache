@@ -6,7 +6,11 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/some/Desktop/PRG/MoreSorts/main.cpp
+C:/Users/some/Desktop/PRG/lists/main.cpp
 iostream
+-
+list
+-
+ctime
 -
 
