@@ -13,6 +13,7 @@ void push(Node **head,int data)
     tmp->data = data;
     tmp->next = (*head);
     (*head) = tmp;
+
 }
 int pop(Node **head)
 {
@@ -59,8 +60,7 @@ void show(const Node *head)
     }
     cout << "nullptr\n";
 }
-
-Node /***/pushBack(Node **head,int data)
+void /***/pushBack(Node **head,int data)
 {
 
 //    Node *last = getLast(head);
@@ -149,8 +149,147 @@ void insert(Node *head,unsigned n,int data)
     }
     head->next=tmp;
 }
+int deleteNth(Node **head,int n)
+{
+    if(n==0)
+    {
+        return pop(head);
+    } else
+    {
+        Node *prev = getNth(*head,n-1);
+        Node *elm = prev->next;
+        int data = elm->data;
+        prev->next=elm->next;
+        delete(elm);
+        return data;
+    }
+}
+void deleteList(Node **head)
+{
+    while ((*head)->next)
+        {
+        pop(head);
+        *head = (*head)->next;
+    }
+    delete(*head);
+}
+void fromArray(Node **head,int *arr,size_t size)
+{
+    size_t i = size - 1;
+    if(arr==nullptr || size==0)
+    {
+        return;
+    }
+    do
+    {
+        push(head,arr[i]);
+    }while(i--!=0);
+}
+int length(const Node *head)
+{
+    int n = 0;
+    while(head)
+    {
+        head=head->next;
+        n++;
+    }
+    return n;
+}
+int *toArray(const Node *head)
+{
+    int leng = length(head);
+    int *values = new int [leng];
+    while(head)
+    {
+        values[--leng] = head->data;
+        head = head->next;
+    }
+    return values;
+}
+
+void merge(Node *a, Node *b, Node **c) {
+    Node tmp;
+    *c = nullptr;
+    if (a == nullptr) {
+        *c = b;
+        return;
+    }
+    if (b == nullptr) {
+        *c = a;
+        return;
+    }
+    if (a->data < b->data) {
+        *c = a;
+        a = a->next;
+    } else {
+        *c = b;
+        b = b->next;
+    }
+    tmp.next = *c;
+    while (a && b) {
+        if (a->data < b->data) {
+            (*c)->next = a;
+            a = a->next;
+        } else {
+            (*c)->next = b;
+            b = b->next;
+        }
+        (*c) = (*c)->next;
+    }
+    if (a) {
+        while (a) {
+            (*c)->next = a;
+            (*c) = (*c)->next;
+            a = a->next;
+        }
+    }
+    if (b) {
+        while (b) {
+            (*c)->next = b;
+            (*c) = (*c)->next;
+            b = b->next;
+        }
+    }
+    *c = tmp.next;
+}
+void split(Node *src, Node **low, Node **high) {
+    Node *fast = NULL;
+    Node *slow = NULL;
+
+    if (src == NULL || src->next == NULL) {
+        (*low) = src;
+        (*high) = NULL;
+        return;
+    }
+
+    slow = src;
+    fast = src->next;
+
+    while (fast != NULL) {
+        fast = fast->next;
+        if (fast != NULL) {
+            fast = fast->next;
+            slow = slow->next;
+        }
+    }
+
+    (*low) = src;
+    (*high) = slow->next;
+    slow->next = NULL;
+}
+void mergeSort(Node **head) {
+    Node *low  = NULL;
+    Node *high = NULL;
+    if ((*head == NULL) || ((*head)->next == NULL)) {
+        return;
+    }
+    split(*head, &low, &high);
+    mergeSort(&low);
+    mergeSort(&high);
+    merge(low, high, head);
+}
 int main() {
-//    srand(time(nullptr));
+    srand(time(nullptr));
 //    list<int> mylist;
 //    for (int i = 0; i < 10; ++i) {
 //        mylist.push_back(rand()%10);
@@ -172,11 +311,43 @@ int main() {
     push(&hued,11);
     push(&hued,10);
     show(hued);
+    deleteList(&hued);
     Node *head=nullptr;
-    pushBack(&head,12);
-    pushBack(&head,11);
-    pushBack(&head,10);
-    insert(head,1,9999);
+    for (int i = 0; i < 10; ++i) {
+        pushBack(&head,rand()%10);
+    }
     show(head);
+    insert(head,8,9999);
+    show(head);
+    deleteNth(&head,2);
+    show(head);
+    Node *newList = nullptr;
+    int arr[]={1,2,3,4,5,6,7,0,0,0,1};
+    fromArray(&newList,arr,11);
+    show(newList);
+    Node *toArr = nullptr;
+    push(&toArr,110);
+    push(&toArr,111);
+    push(&toArr,101);
+    int *ARR = toArray(toArr);
+    for (int j = 0; j < length(toArr); ++j) {
+        cout << ARR[j] << " ";
+    }
+    Node *merged = nullptr;
+    cout << endl;
+    Node *test1 = nullptr;
+    pushBack(&test1,1);
+    pushBack(&test1,5);
+    pushBack(&test1,2);
+    pushBack(&test1,3);
+    Node *test2 = nullptr;
+    pushBack(&test2,1111);
+    pushBack(&test2,1011);
+    pushBack(&test2,1010);
+    pushBack(&test2,1001);
+    merge(test1,test2,&merged);
+    show(merged);
+    mergeSort(&merged);
+    show(merged);
     return 0;
 }
