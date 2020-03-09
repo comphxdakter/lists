@@ -253,21 +253,21 @@ void merge(Node *a, Node *b, Node **c) {
     *c = tmp.next;
 }
 void split(Node *src, Node **low, Node **high) {
-    Node *fast = NULL;
-    Node *slow = NULL;
+    Node *fast = nullptr;
+    Node *slow = nullptr;
 
-    if (src == NULL || src->next == NULL) {
+    if (src == nullptr || src->next == nullptr) {
         (*low) = src;
-        (*high) = NULL;
+        (*high) = nullptr;
         return;
     }
 
     slow = src;
     fast = src->next;
 
-    while (fast != NULL) {
+    while (fast != nullptr) {
         fast = fast->next;
-        if (fast != NULL) {
+        if (fast != nullptr) {
             fast = fast->next;
             slow = slow->next;
         }
@@ -275,12 +275,12 @@ void split(Node *src, Node **low, Node **high) {
 
     (*low) = src;
     (*high) = slow->next;
-    slow->next = NULL;
+    slow->next = nullptr;
 }
 void mergeSort(Node **head) {
-    Node *low  = NULL;
-    Node *high = NULL;
-    if ((*head == NULL) || ((*head)->next == NULL)) {
+    Node *low  = nullptr;
+    Node *high = nullptr;
+    if ((*head == nullptr) || ((*head)->next == nullptr)) {
         return;
     }
     split(*head, &low, &high);
